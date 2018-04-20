@@ -1,0 +1,26 @@
+{
+  "name": "powerplay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdaq/PowerPlay.git"
+  },
+  "author": "Joshua Aquino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jdaq/PowerPlay/issues"
+  },
+  "homepage": "https://github.com/jdaq/PowerPlay#readme",
+  "dependencies": {
+    "web3": "^1.0.0-beta.34"
+  },
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
+}

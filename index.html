@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Power Play</h1>
+        <h2 id="result"></h2>
+        <button id="buttonA">Buy In A</button>
+        <button id="buttonB">Buy In B</button>
+        <span id="hashBlock"></span>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script>
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+    } else {
+        // set the provider you want from Web3.providers
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    }
+
+    var PowerContract = web3.eth.contract([{
+            "constant": false,
+            "inputs": [],
+            "name": "buyInGroupA",
+            "outputs": [],
+            "payable": true,
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [],
+            "name": "buyInGroupB",
+            "outputs": [],
+            "payable": true,
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [{
+                "name": "newJackpot",
+                "type": "uint256"
+            }],
+            "name": "changeJackpotAmount",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [{
+                "name": "newOwner",
+                "type": "address"
+            }],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "winningGroup",
+                "type": "string"
+            }],
+            "name": "WinnerWinnerChickenDinner",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [],
+            "name": "EntrySubmitted",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [{
+                    "indexed": true,
+                    "name": "previousOwner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getFunds",
+            "outputs": [{
+                    "name": "",
+                    "type": "uint256"
+                },
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [{
+                "name": "",
+                "type": "address"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ]);
+
+    var PowerPlay = PowerContract.at('0x6fa486478077a3343321c537fba7c9436f0a72fc');
+    console.log(PowerPlay);
+
+    var winEvent = PowerPlay.WinnerWinnerChickenDinner({}, "latest");
+    var enterEvent = PowerPlay.EntrySubmitted({}, "latest");
+
+    enterEvent.watch(function(err, result) {
+        if (!err) {
+            $("#hashBlock").html(result);
+        }
+    });
+
+    $("#buttonA").click(function() {
+        PowerPlay.buyInGroupA({ value: 1 * 10 ** 18, gas: 300000 }, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(res);
+            }
+        });
+    });
+
+    $("#buttonB").click(function() {
+        PowerPlay.buyInGroupB({ value: 1 * 10 ** 18, gas: 300000 }, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(res);
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>
